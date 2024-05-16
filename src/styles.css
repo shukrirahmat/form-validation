@@ -1,0 +1,77 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+body {
+  height: 900px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: lightgray;
+}
+
+#box {
+  background-color: cornflowerblue;
+  width: 600px;
+  height: 600px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 25px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#box p {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#box form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+#box button {
+    border: none;
+    background-color: ghostwhite;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    color: cornflowerblue;
+    border-radius: 5px;
+    padding: 10px 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#box button:hover {
+    background-color: rgb(228, 228, 235);
+}
+
+.inputcontainer {
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: baseline;
+    justify-content: center;
+    background-color: brown;
+}
+
+.inputcontainer label {
+    font-size: 14px;
+    font-family: monospace;
+}
+
+.inputcontainer input {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 18px;
+    padding: 2px 10px;
+    width: 400px;
+}
