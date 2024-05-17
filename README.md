@@ -1,3 +1,3 @@
 # form-validation
 
-Validating form using javascripts
+Validating form using javascript
