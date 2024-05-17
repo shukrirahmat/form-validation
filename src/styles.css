@@ -24,6 +24,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  justify-content: center;
 }
 
 #box p {
@@ -87,6 +88,11 @@ body {
 }
 
 input:user-invalid {
+    outline: none;
+    border: 2px solid crimson;
+}
+
+input.submitted:invalid {
     outline: none;
     border: 2px solid crimson;
 }
