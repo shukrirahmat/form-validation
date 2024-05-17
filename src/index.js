@@ -1,29 +1,33 @@
 import "./styles.css";
+import createInput from "./createInput";
+import isPasswordMatch from "./isPasswordMatch";
 
 const box = document.querySelector("#box");
 const boxtext = document.querySelector("#box > p");
 const form = document.querySelector("form");
-const mail = document.querySelector("#mail");
+const mailinput = document.querySelector("#mail");
 const mailerror = document.querySelector("#mail + p.error");
-const country = document.querySelector("#country");
+const countryinput = document.querySelector("#country");
 const countryerror = document.querySelector("#country + p.error");
-const zipcode = document.querySelector("#zipcode");
+const zipcodeinput = document.querySelector("#zipcode");
 const zipcodeerror = document.querySelector("#zipcode + p.error");
-const pw = document.querySelector("#pw");
+const pwinput = document.querySelector("#pw");
 const pwerror = document.querySelector("#pw + p.error");
-const pwconfirm = document.querySelector("#pwconfirm");
+const pwconfirminput = document.querySelector("#pwconfirm");
 const pwconfirmerror = document.querySelector("#pwconfirm + p.error");
 
-const allInputs = [mail, country, zipcode, pw, pwconfirm];
+const mail = createInput(mailinput, mailerror);
+const country = createInput(countryinput, countryerror);
+const zipcode = createInput(zipcodeinput, zipcodeerror);
+const pw = createInput(pwinput, pwerror);
+const pwconfirm = createInput(pwconfirminput, pwconfirmerror);
 
-const isPasswordMatch = function isPasswordMatch() {
-  return pw.value === pwconfirm.value;
-};
+const allInputs = [mail, country, zipcode, pw, pwconfirm];
 
 const isAllValid = function isAllValid() {
   let validity = true;
   allInputs.forEach((input) => {
-    if (!input.validity.valid) {
+    if (!input.isValid()) {
       validity = false;
     }
   });
@@ -31,90 +35,51 @@ const isAllValid = function isAllValid() {
   return validity;
 };
 
-const showError = function showError(input) {
-  if (input === mail) {
-    if (mail.validity.valueMissing) {
-      mailerror.textContent = "Email address is required";
-    } else if (mail.validity.typeMismatch) {
-      mailerror.textContent = "Email address must be valid";
-    }
-  }
-
-  if (input === country) {
-    if (country.validity.valueMissing) {
-      countryerror.textContent = "Country is required";
-    }
-  }
-
-  if (input === zipcode) {
-    if (zipcode.validity.valueMissing) {
-      zipcodeerror.textContent = "Zip Code is required";
-    } else if (zipcode.validity.patternMismatch) {
-      zipcodeerror.textContent = "Zip Code should be 5 digits number";
-    }
-  }
-
-  if (input === pw) {
-    if (pw.validity.valueMissing) {
-      pwerror.textContent = "Password is required";
-    } else if (!isPasswordMatch()) {
-      pwerror.textContent = "Password mismatch";
-    }
-  }
-
-  if (input === pwconfirm) {
-    if (pwconfirm.validity.valueMissing) {
-      pwconfirmerror.textContent = "Password is required";
-    } else if (!isPasswordMatch()) {
-      pwconfirmerror.textContent = "Password mismatch";
-    }
-  }
-};
 
 const submitSuccess = function submitSuccess() {
   box.removeChild(form);
   boxtext.textContent = "High Five! You have signed up succesfully.";
 };
 
-const setInputEvent = function setInputEvent(input, error) {
-  input.addEventListener("input", () => {
-    if (input.validity.valid) {
-      error.textContent = "";
+const setInputEvent = function setInputEvent(input) {
+  input.getNode().addEventListener("input", () => {
+    if (input.isValid()) {
+      input.clearError();
     } else {
-      showError(input);
+      input.showError();
     }
   });
 };
 
-setInputEvent(mail, mailerror);
-setInputEvent(country, countryerror);
-setInputEvent(zipcode, zipcodeerror);
+setInputEvent(mail);
+setInputEvent(country);
+setInputEvent(zipcode);
 
-pw.addEventListener("input", () => {
-  if (pw.validity.valid && isPasswordMatch()) {
-    pwerror.textContent = "";
-    pwconfirmerror.textContent = "";
+pw.getNode().addEventListener("input", () => {
+  if (pw.isValid() && isPasswordMatch()) {
+    pw.clearError();
+    pwconfirm.clearError();
   } else {
-    showError(pw);
-    showError(pwconfirm);
+    pw.showError();
+    pwconfirm.showError();
   }
 });
 
-pwconfirm.addEventListener("input", () => {
-  if (pwconfirm.validity.valid && isPasswordMatch()) {
-    pwerror.textContent = "";
-    pwconfirmerror.textContent = "";
-  } else {
-    showError(pw);
-    showError(pwconfirm);
-  }
-});
+pwconfirm.getNode().addEventListener("input", () => {
+    if (pwconfirm.isValid() && isPasswordMatch()) {
+      pw.clearError();
+      pwconfirm.clearError();
+    } else {
+      pw.showError();
+      pwconfirm.showError();
+    }
+  });
 
 form.addEventListener("submit", (event) => {
   if (!isAllValid() || !isPasswordMatch()) {
     allInputs.forEach((input) => {
-      showError(input);
-      input.classList.add("submitted");
+      input.showError();
+      input.getNode().classList.add("submitted");
     });
     event.preventDefault();
   } else {
